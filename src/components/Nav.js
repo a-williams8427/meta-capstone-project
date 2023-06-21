@@ -4,12 +4,12 @@ import basket from '../assets/icons/Basket.svg'
 
 function Nav() {
   return (
-    <nav>
+    <nav style={{display: "flex"}}>
         <div>
             <img src={logo}/>
         </div>
-        <div>
-            <ul>
+        <div >
+            <ul style={{display: "flex", justifyContent: "space-around", alignContent: "space-between", gap: "1rem"}}>
                 <li>
                     <a href='#'>Home</a>
                 </li>
@@ -18,6 +18,7 @@ function Nav() {
                 </li>
             </ul>
         </div>
+        <div style={{flexGrow: 1}}/>
         <div>
             <img src={basket}/>
         </div>
