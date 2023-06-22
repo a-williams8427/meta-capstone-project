@@ -2,13 +2,26 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/icons/Logo.svg";
 import basket from "../../assets/icons/Basket.svg";
-import { AppBar, Box, Button, IconButton, List, Toolbar } from "@mui/material";
+import {
+    AppBar,
+    Box,
+    Button,
+    Drawer,
+    IconButton,
+    List,
+    Toolbar,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import Sidebar from "./Sidebar";
 
-function Nav() {
+function Nav({ window }) {
     const [mobileOpen, setMobileOpen] = useState(false);
+
+    const sidebarWidth = 240;
+    const container =
+        window !== undefined ? () => window().document.body : undefined;
+
     const navLinks = [
         { text: "Home", link: "/" },
         { text: "Book", link: "/booking" },
@@ -42,7 +55,10 @@ function Nav() {
             <AppBar
                 component="nav"
                 position="sticky"
-                sx={{ backgroundColor: "white" }}
+                sx={{
+                    backgroundColor: "white",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
             >
                 <Toolbar>
                     <div
@@ -97,6 +113,28 @@ function Nav() {
                     </div>
                 </Toolbar>
             </AppBar>
+            <Box component="nav">
+                <Drawer
+                    container={container}
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleSidebarToggle}
+                    ModalProps={{ keepMounted: true }}
+                    sx={{
+                        display: { xs: "block", sm: "none" },
+                        "& .MuiDrawer-paper": {
+                            boxSizing: "border-box",
+                            width: sidebarWidth,
+                        },
+                    }}
+                >
+                    <Toolbar />
+                    <Sidebar
+                        navItems={navLinks}
+                        handleSidebarToggle={handleSidebarToggle}
+                    />
+                </Drawer>
+            </Box>
         </>
     );
 }
