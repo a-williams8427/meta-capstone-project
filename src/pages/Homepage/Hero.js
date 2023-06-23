@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
 
-import picture from "../assets/pictures/restauranfood.jpg";
-import YellowButton from "./YellowButton";
+import picture from "../../assets/pictures/restauranfood.jpg";
+import YellowButton from "../../components/YellowButton";
 
 function Hero() {
     return (
