@@ -62,11 +62,9 @@ function Nav({ window }) {
                 <Toolbar>
                     <div
                         style={{
-                            flexGrow: "1",
+                            flex: "1",
                             display: "flex",
                             alignItems: "center",
-                            marginLeft: "10px",
-                            marginRight: "10px",
                         }}
                     >
                         <Box sx={{ display: { sm: "none" } }}>
@@ -74,11 +72,12 @@ function Nav({ window }) {
                                 aria-label="open sidebar"
                                 edge="start"
                                 onClick={handleSidebarToggle}
+                                sx={{ ml: 0 }}
                             >
                                 <MenuIcon />
                             </IconButton>
                         </Box>
-                        <Box sx={{ flexGrow: "1" }} />
+                        <Box sx={{ flex: "1", display: { sm: "none" } }} />
                         <Box sx={{ display: { sm: "none" } }}>
                             <img src={logo} alt="Little Lemon Logo" />
                         </Box>
@@ -102,7 +101,7 @@ function Nav({ window }) {
                                 </Button>
                             ))}
                         </Box>
-                        <Box sx={{ flexGrow: "1" }} />
+                        <Box sx={{ flex: "1" }} />
                         <IconButton size="small">
                             <img
                                 src={basket}
