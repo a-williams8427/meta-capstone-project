@@ -1,8 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
-import Nav from "./components/Nav/Nav";
-import Homepage from "./pages/Homepage/Homepage";
+import Nav from "./components/Nav";
+import Homepage from "./pages/Homepage";
 import BookingPage from "./pages/BookingPage";
 import { theme } from "./lib/theme";
 
