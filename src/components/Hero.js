@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 import picture from "../assets/pictures/restauranfood.jpg";
 import YellowButton from "./YellowButton";
@@ -12,6 +12,7 @@ function Hero() {
                     width: "100%",
                     height: "400px",
                     backgroundColor: "primary.main",
+                    mb: "4rem",
                 }}
             >
                 <div style={{ marginLeft: "25px", marginRight: "25px" }}>
@@ -50,7 +51,7 @@ function Hero() {
                                 variant="contained"
                                 sx={{ marginTop: "1rem" }}
                             >
-                                Reserve a Table
+                                Reserve a table
                             </YellowButton>
                         </Grid>
                         <Grid item xs={5} md={6} lg={9}>
