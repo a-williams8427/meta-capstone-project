@@ -8,7 +8,6 @@ import {
     Button,
     Drawer,
     IconButton,
-    List,
     Toolbar,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -66,6 +65,8 @@ function Nav({ window }) {
                             flexGrow: "1",
                             display: "flex",
                             alignItems: "center",
+                            marginLeft: "10px",
+                            marginRight: "10px",
                         }}
                     >
                         <Box sx={{ display: { sm: "none" } }}>
@@ -73,7 +74,6 @@ function Nav({ window }) {
                                 aria-label="open sidebar"
                                 edge="start"
                                 onClick={handleSidebarToggle}
-                                sx={{ mr: 2 }}
                             >
                                 <MenuIcon />
                             </IconButton>
