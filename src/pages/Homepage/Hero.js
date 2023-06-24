@@ -3,6 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 
 import picture from "../../assets/pictures/restauranfood.jpg";
 import YellowButton from "../../components/YellowButton";
+import Chicago from "../../components/Chicago";
 
 function Hero() {
     return (
@@ -17,25 +18,8 @@ function Hero() {
             >
                 <div style={{ marginLeft: "25px", marginRight: "25px" }}>
                     <Grid container spacing={{ xs: 2, md: 3 }}>
-                        <Grid item xs={12} sx={{ lineHeight: "0.9" }}>
-                            <Typography
-                                paddingTop={"1rem"}
-                                variant="h3"
-                                color="primary.light"
-                                lineHeight="inherit"
-                                fontWeight="inherit"
-                            >
-                                Little Lemon
-                            </Typography>
-                            <Typography
-                                variant="h4"
-                                color="primary.contrastText"
-                                fontFamily="Markazi Text"
-                                lineHeight="inherit"
-                                fontWeight="inherit"
-                            >
-                                Chicago
-                            </Typography>
+                        <Grid item xs={12} sx={{}}>
+                            <Chicago />
                         </Grid>
                         <Grid item xs={7} md={6} lg={3}>
                             <Typography
