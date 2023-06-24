@@ -7,7 +7,8 @@ const YellowButton = styled(Button)(({ theme }) => ({
     borderRadius: "16px",
     textTransform: "none",
     fontFamily: "Karla",
-    fontWeight: "bold",
+    fontWeight: "bolder",
+    fontSize: "18px",
     "&:hover": {
         backgroundColor: theme.palette.secondary.main,
     },
