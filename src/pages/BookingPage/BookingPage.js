@@ -1,7 +1,7 @@
 import React from "react";
 import BookingForm from "./BookingForm";
 import Chicago from "../../components/Chicago";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 function BookingPage() {
     return (
@@ -15,7 +15,7 @@ function BookingPage() {
                 <div style={{ marginLeft: "25px", marginRight: "25px" }}>
                     <Chicago />
                     <Typography
-                        variant="h5"
+                        variant="h6"
                         color="primary.contrastText"
                         component="h3"
                         paddingTop="5rem"
