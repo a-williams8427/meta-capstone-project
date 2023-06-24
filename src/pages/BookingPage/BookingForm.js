@@ -4,18 +4,27 @@ import {
     Box,
     FormControl,
     Grid,
+    InputAdornment,
     InputLabel,
     MenuItem,
     Select,
+    Stack,
     TextField,
 } from "@mui/material";
+import GroupIcon from "@mui/icons-material/Group";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import YellowButton from "../../components/YellowButton";
 
 const openHour = dayjs().set("hour", 17).startOf("hour");
 const closeHour = dayjs().set("hour", 22).startOf("hour");
+
+const minDiners = 1;
+const maxDiners = 16;
+
+const occasions = ["Party", "Business", "Holiday", "Gathering"];
 
 const schema = yup.object().shape({
     bookDate: yup
@@ -52,12 +61,6 @@ const schema = yup.object().shape({
                     value.hour() >= openHour.hour() &&
                     value.hour() <= closeHour.hour();
 
-                console.log(
-                    currentDate.toDate(),
-                    selectedDateTime.toDate(),
-                    isOpen,
-                    value.hour()
-                );
                 if (
                     (selectedDateTime.isAfter(currentDate) && !isOpen) ||
                     !isOpen
@@ -81,9 +84,10 @@ const schema = yup.object().shape({
         ),
     diners: yup
         .number()
-        .min(1, "Please chose at least 1 person as a guest")
-        .max(12, "We can only seat 16 people per reservation")
+        .min(minDiners, `Please chose at least ${minDiners} person as a guest`)
+        .max(maxDiners, `We can only seat ${maxDiners} people per reservation`)
         .required("Please pick the number diners"),
+    occasion: yup.string(),
 });
 
 function BookingForm() {
@@ -98,7 +102,8 @@ function BookingForm() {
         defaultValues: {
             bookDate: dayjs(),
             bookTime: openHour,
-            diners: undefined,
+            diners: null,
+            occasion: "",
         },
         resolver: yupResolver(schema),
     });
@@ -107,81 +112,124 @@ function BookingForm() {
         console.log(data);
     };
 
-    //console.log(errors.bookDate);
-    console.log(watch("diners"));
-
-    const fieldWidthFull = "52ch";
-    const fieldWidthHalf = "25ch";
+    //console.log(errors.diners);
+    //console.log(watch("diners"));
 
     return (
         <>
             <Box
                 component="form"
-                sx={{
-                    "& .MuiTextField-root": { m: 1 },
-                }}
                 noValidate
                 autoComplete="off"
-                textAlign={"center"}
+                onSubmit={handleSubmit(onSubmit)}
+                paddingTop={"2rem"}
             >
-                <div>
-                    <Controller
-                        control={control}
-                        name="bookDate"
-                        render={({ field }) => (
-                            <DatePicker
-                                {...field}
-                                label="Date"
-                                disablePast
-                                sx={{ width: fieldWidthHalf }}
-                                onChange={(e) => field.onChange(e)}
-                                onClose={() => trigger(field.name)}
-                                value={field.value || null}
-                                slotProps={{
-                                    textField: {
-                                        error: !!errors.bookDate,
-                                        helperText: errors.bookDate?.message,
-                                    },
-                                }}
-                            />
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="bookTime"
-                        render={({ field }) => (
-                            <TimePicker
-                                {...field}
-                                label="Time"
-                                minTime={openHour}
-                                maxTime={closeHour}
-                                closeOnSelect={false}
-                                sx={{ width: fieldWidthHalf }}
-                                onChange={(e) => field.onChange(e)}
-                                onClose={() => trigger(field.name)}
-                                value={field.value || null}
-                                slotProps={{
-                                    textField: {
-                                        error: !!errors.bookTime,
-                                        helperText: errors.bookTime?.message,
-                                    },
-                                }}
-                            />
-                        )}
-                    />
-                </div>
-                <div>
+                <Stack
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={{ xs: 1, sm: 2 }}
+                    maxWidth={"450px"}
+                    width={"100%"}
+                    marginLeft={"auto"}
+                    marginRight={"auto"}
+                >
+                    <Stack
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        spacing={{ xs: 1, sm: 2 }}
+                    >
+                        <Controller
+                            control={control}
+                            name="bookDate"
+                            render={({ field }) => (
+                                <DatePicker
+                                    {...field}
+                                    label="Date"
+                                    disablePast
+                                    onChange={(e) => field.onChange(e)}
+                                    onClose={() => trigger(field.name)}
+                                    value={field.value || null}
+                                    slotProps={{
+                                        textField: {
+                                            error: !!errors.bookDate,
+                                            helperText:
+                                                errors.bookDate?.message,
+                                            fullWidth: true,
+                                        },
+                                    }}
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="bookTime"
+                            render={({ field }) => (
+                                <TimePicker
+                                    {...field}
+                                    label="Time"
+                                    minTime={openHour}
+                                    maxTime={closeHour}
+                                    closeOnSelect={false}
+                                    onChange={(e) => field.onChange(e)}
+                                    onClose={() => trigger(field.name)}
+                                    value={field.value || null}
+                                    slotProps={{
+                                        textField: {
+                                            error: !!errors.bookTime,
+                                            helperText:
+                                                errors.bookTime?.message,
+                                            fullWidth: true,
+                                        },
+                                    }}
+                                />
+                            )}
+                        />
+                    </Stack>
                     <TextField
-                        sx={{ width: fieldWidthFull }}
                         label="Number of Diners"
                         type="number"
                         fullWidth
-                        onBlur={() => trigger("diners")}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <GroupIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                        inputProps={{
+                            min: minDiners,
+                            max: maxDiners,
+                        }}
                         {...register("diners")}
                         error={!!errors.diners}
                         helperText={errors.diners?.message}
                     />
-                </div>
+                    <Controller
+                        name="occasion"
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="Occasion"
+                                select
+                                fullWidth
+                                error={!!errors.occasion}
+                                helperText={errors.occasion?.message}
+                            >
+                                {occasions.map((occasion) => (
+                                    <MenuItem key={occasion} value={occasion}>
+                                        {occasion}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        )}
+                    />
+                    <YellowButton type="submit" variant="contained" fullWidth>
+                        Let's Go
+                    </YellowButton>
+                </Stack>
             </Box>
         </>
     );
