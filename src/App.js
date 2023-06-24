@@ -5,17 +5,21 @@ import Nav from "./components/Nav";
 import Homepage from "./pages/Homepage";
 import BookingPage from "./pages/BookingPage";
 import { theme } from "./lib/theme";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 function App() {
     return (
         <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <Nav />
-                <Routes>
-                    <Route path="/" element={<Homepage />} />
-                    <Route path="/booking" element={<BookingPage />} />
-                </Routes>
-            </BrowserRouter>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <BrowserRouter>
+                    <Nav />
+                    <Routes>
+                        <Route path="/" element={<Homepage />} />
+                        <Route path="/booking" element={<BookingPage />} />
+                    </Routes>
+                </BrowserRouter>
+            </LocalizationProvider>
         </ThemeProvider>
     );
 }
