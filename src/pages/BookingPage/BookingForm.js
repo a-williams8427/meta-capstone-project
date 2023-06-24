@@ -88,6 +88,7 @@ const schema = yup.object().shape({
         .max(maxDiners, `We can only seat ${maxDiners} people per reservation`)
         .required("Please pick the number diners"),
     occasion: yup.string(),
+    seating: yup.string().required("Please select a seating option"),
 });
 
 function BookingForm() {
@@ -102,8 +103,9 @@ function BookingForm() {
         defaultValues: {
             bookDate: dayjs(),
             bookTime: openHour,
-            diners: null,
+            diners: 0,
             occasion: "",
+            seating: "",
         },
         resolver: yupResolver(schema),
     });
@@ -223,6 +225,23 @@ function BookingForm() {
                                         {occasion}
                                     </MenuItem>
                                 ))}
+                            </TextField>
+                        )}
+                    />
+                    <Controller
+                        name="seating"
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="Seating Option"
+                                select
+                                fullWidth
+                                error={!!errors.seating}
+                                helperText={errors.seating?.message}
+                            >
+                                <MenuItem value={"Indoor"}>Indoor</MenuItem>
+                                <MenuItem value={"Outdoor"}>Outdoor</MenuItem>
                             </TextField>
                         )}
                     />
