@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BookingForm from "./BookingForm";
 import Chicago from "../../components/Chicago";
 import { Box, Typography } from "@mui/material";
@@ -8,15 +8,28 @@ import PersonalInfoForm from "./PersonalInfoForm";
 import { openHour } from "./BookingFormValidation";
 
 function BookingPage() {
-    const [currentStep, setCurrentStep] = useState(0);
-
-    const [formData, setFormData] = useState({
-        bookDate: dayjs(),
+    const defaultFormFields = {
         bookTime: openHour,
+        bookDate: dayjs(),
         diners: 0,
         occasion: "",
         seating: "",
-    });
+        // Step two
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        email: "",
+        request: "",
+    };
+    const [formData, setFormData] = useState({ ...defaultFormFields });
+    const [currentStep, setCurrentStep] = useState(0);
+    //const [formSubmitted, setFormSubmitted] = useState(false);
+
+    //TODO: need to reset form to default values both on mount and when the form is submitted
+    // const ResetForm = (formSubmitted) => {useEffect(() => {
+    //     setFormData(() => ({...defaultFormFields}))
+    // },[formSubmitted]);
+    // }
 
     const handleFormData = (data) => {
         setFormData((prevData) => ({ ...prevData, ...data }));

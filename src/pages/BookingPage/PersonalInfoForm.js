@@ -44,7 +44,7 @@ const schema = yup.object({
 });
 
 function PersonalInfoForm() {
-    const { handleFormData, handleStep } = useContext(BookingContext);
+    const { handleFormData, handleStep, formData } = useContext(BookingContext);
 
     const {
         register,
@@ -52,11 +52,11 @@ function PersonalInfoForm() {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            firstName: "",
-            lastName: "",
-            phoneNumber: "",
-            email: "",
-            request: "",
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            phoneNumber: formData.phoneNumber,
+            email: formData.email,
+            request: formData.request,
         },
         resolver: yupResolver(schema),
     });
