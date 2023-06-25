@@ -21,7 +21,6 @@ function BookingForm() {
     const {
         register,
         handleSubmit,
-        watch,
         control,
         formState: { errors },
         trigger,
@@ -43,9 +42,6 @@ function BookingForm() {
     };
 
     const occasions = ["Party", "Business", "Holiday", "Gathering"];
-
-    //console.log(errors.diners);
-    //console.log(watch("diners"));
 
     return (
         <>

@@ -10,6 +10,7 @@ function Specials() {
                     height: "10vw",
                 }}
             />
+            {/*TODO: Finish either mocking specials for using an actual API  */}
             <Grid container>
                 <Grid item xs={12}>
                     <Typography variant="h3" color="text">
