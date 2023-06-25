@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import BookingForm from "./BookingForm";
 import Chicago from "../../components/Chicago";
 import { Box, Typography } from "@mui/material";
+import PersonalInfoForm from "./PersonalInfoForm";
 
 function BookingPage() {
     const [currentStep, setCurrentStep] = useState(0);
@@ -10,9 +11,11 @@ function BookingPage() {
         setCurrentStep((prevStep) => prevStep + 1);
     };
 
+    //Placeholder for when I use the form data
+    //`${seating}table for ${diners} diners on ${bookDate} at ${bookTime} `
     const subTitles = [
         "Find a table for any occasion",
-        "Who should the reservation be for?",
+        "Who is the reservation for?",
     ];
 
     return (
@@ -37,7 +40,16 @@ function BookingPage() {
                 </div>
             </Box>
             <div style={{ marginLeft: "25px", marginRight: "25px" }}>
-                <BookingForm handleStep={handleStep} />
+                {currentStep === 0 && (
+                    <>
+                        <BookingForm handleStep={handleStep} />
+                    </>
+                )}
+                {currentStep === 1 && (
+                    <>
+                        <PersonalInfoForm />
+                    </>
+                )}
             </div>
         </>
     );
