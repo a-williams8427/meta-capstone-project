@@ -23,7 +23,6 @@ function BookingForm() {
         handleSubmit,
         control,
         formState: { errors },
-        trigger,
     } = useForm({
         defaultValues: {
             bookDate: formData.bookDate,
@@ -61,7 +60,6 @@ function BookingForm() {
                                 label="Date"
                                 disablePast
                                 onChange={(e) => field.onChange(e)}
-                                onClose={() => trigger(field.name)}
                                 value={field.value || null}
                                 slotProps={{
                                     textField: {
@@ -85,7 +83,6 @@ function BookingForm() {
                                 maxTime={closeHour}
                                 closeOnSelect={false}
                                 onChange={(e) => field.onChange(e)}
-                                onClose={() => trigger(field.name)}
                                 value={field.value || null}
                                 slotProps={{
                                     textField: {
