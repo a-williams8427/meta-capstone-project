@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { BookingContext } from "../../Contexts/BookingContext";
 import dayjs from "dayjs";
 import { InputAdornment, MenuItem, Stack, TextField } from "@mui/material";
 import GroupIcon from "@mui/icons-material/Group";
@@ -33,14 +34,17 @@ const schema = yup.object().shape({
                     .set("minute", value.minute())
                     .set("second", value.second());
 
+                const isSameDay = selectedDateTime
+                    .startOf("day")
+                    .isSame(currentDate.startOf("day"));
+                const isBeforeCurrentDateTime =
+                    selectedDateTime.isBefore(currentDate);
+
                 const isOpen =
                     value.hour() >= openHour.hour() &&
                     value.hour() <= closeHour.hour();
 
-                if (
-                    (selectedDateTime.isAfter(currentDate) && !isOpen) ||
-                    !isOpen
-                ) {
+                if (selectedDateTime.isAfter(currentDate) && !isOpen) {
                     return this.createError({
                         message: `Please select a time between ${openHour.format(
                             "hh:mm A"
@@ -49,13 +53,9 @@ const schema = yup.object().shape({
                     });
                 }
                 if (
-                    selectedDateTime
-                        .startOf("day")
-                        .isSame(currentDate.startOf("day")) &&
-                    selectedDateTime.isBefore(currentDate) &&
-                    currentDate.isBefore(
-                        selectedDateTime.set("hour", closeHour.hour())
-                    )
+                    isSameDay &&
+                    isBeforeCurrentDateTime &&
+                    currentDate.isBefore(closeHour)
                 ) {
                     return this.createError({
                         message: `Please select a time after ${currentDate.format(
@@ -65,13 +65,9 @@ const schema = yup.object().shape({
                     });
                 }
                 if (
-                    selectedDateTime
-                        .startOf("day")
-                        .isSame(currentDate.startOf("day")) &&
-                    selectedDateTime.isBefore(currentDate) &&
-                    currentDate.isAfter(
-                        selectedDateTime.set("hour", closeHour.hour())
-                    )
+                    isSameDay &&
+                    isBeforeCurrentDateTime &&
+                    currentDate.isAfter(closeHour)
                 ) {
                     return this.createError({
                         message: `We are closed for today, please select a date after ${currentDate.format(
@@ -80,7 +76,7 @@ const schema = yup.object().shape({
                         path: "bookDate",
                     });
                 }
-                if (selectedDateTime.isBefore(currentDate)) {
+                if (isBeforeCurrentDateTime) {
                     return this.createError({
                         message: "Please select a date in the future.",
                         path: "bookDate",
@@ -99,7 +95,9 @@ const schema = yup.object().shape({
     seating: yup.string().required("Please select a seating option"),
 });
 
-function BookingForm({ handleStep }) {
+function BookingForm() {
+    const { handleFormData, handleStep } = useContext(BookingContext);
+
     const {
         register,
         handleSubmit,
@@ -120,6 +118,7 @@ function BookingForm({ handleStep }) {
 
     const onSubmit = (data) => {
         console.log(data);
+        handleFormData(data);
         handleStep();
     };
 
