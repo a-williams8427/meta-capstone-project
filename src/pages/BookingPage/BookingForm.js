@@ -41,7 +41,7 @@ function BookingForm() {
         handleStep("step");
     };
 
-    const occasions = ["Party", "Business", "Holiday", "Gathering"];
+    const occasions = ["Birthday", "Anniversary", "Holiday", "Gathering"];
 
     return (
         <>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BookingForm from "./BookingForm";
 import Chicago from "../../components/Chicago";
 import { Box, Typography } from "@mui/material";
@@ -23,13 +23,6 @@ function BookingPage() {
     };
     const [formData, setFormData] = useState({ ...defaultFormFields });
     const [currentStep, setCurrentStep] = useState(0);
-    //const [formSubmitted, setFormSubmitted] = useState(false);
-
-    //TODO: need to reset form to default values both on mount and when the form is submitted
-    // const ResetForm = (formSubmitted) => {useEffect(() => {
-    //     setFormData(() => ({...defaultFormFields}))
-    // },[formSubmitted]);
-    // }
 
     const handleFormData = (data) => {
         setFormData((prevData) => ({ ...prevData, ...data }));
@@ -47,6 +40,8 @@ function BookingPage() {
                 return;
         }
     };
+
+    //TODO: Misread specifications, need to redo the validation to be slots that update based on the selected date
 
     const bookingDescription = `${formData.seating} table for ${
         formData.diners
