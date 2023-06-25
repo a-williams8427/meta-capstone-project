@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import BookingForm from "./BookingForm";
 import Chicago from "../../components/Chicago";
 import { Box, Typography } from "@mui/material";
 
 function BookingPage() {
+    const [currentStep, setCurrentStep] = useState(0);
+
+    const handleStep = () => {
+        setCurrentStep((prevStep) => prevStep + 1);
+    };
+
+    const subTitles = [
+        "Find a table for any occasion",
+        "Who should the reservation be for?",
+    ];
+
     return (
         <>
             <Box
@@ -21,12 +32,12 @@ function BookingPage() {
                         paddingTop="5rem"
                         paddingBottom="1rem"
                     >
-                        Find a table for any occasion
+                        {subTitles[currentStep]}
                     </Typography>
                 </div>
             </Box>
             <div style={{ marginLeft: "25px", marginRight: "25px" }}>
-                <BookingForm />
+                <BookingForm handleStep={handleStep} />
             </div>
         </>
     );
