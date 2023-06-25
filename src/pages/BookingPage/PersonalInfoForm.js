@@ -1,5 +1,6 @@
+import React, { useContext } from "react";
+import { BookingContext } from "../../Contexts/BookingContext";
 import { Stack, TextField } from "@mui/material";
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -9,7 +10,6 @@ import YellowButton from "../../components/YellowButton";
 const maxNameLength = 50;
 const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-const phoneNumberLength = 10;
 const maxEmailLength = 320;
 const maxTextFieldLength = 300;
 
@@ -18,29 +18,34 @@ const schema = yup.object({
         .string()
         .max(
             maxNameLength,
-            "Please use a first name that is less than 50 characters"
+            `Please use a first name that is less than ${maxNameLength} characters`
         )
         .required("Please give a first name for the reservation"),
     lastName: yup
         .string()
         .max(
             maxNameLength,
-            "Please use a last name that is less than 50 characters"
+            `Please use a last name that is less than ${maxNameLength} characters`
         )
         .required("Please give a last name for the reservation"),
     phoneNumber: yup
         .string()
-        .matches(phoneRegExp, "Please provide a valid phone number.")
-        .length(phoneNumberLength, "Please provide a number that is 10 digits")
-        .required("Please provide a phone number."),
+        .required("Please provide a phone number.")
+        .matches(phoneRegExp, "Please provide a valid phone number."),
     email: yup
         .string()
         .email("Please provide a valid email.")
-        .max.required("Please provide an email"),
+        .max(
+            maxEmailLength,
+            `Please provide an email less than ${maxEmailLength} characters`
+        )
+        .required("Please provide an email"),
     request: yup.string(),
 });
 
-function PersonalInfoForm({ handleStep }) {
+function PersonalInfoForm() {
+    const { handleFormData, handleStep } = useContext(BookingContext);
+
     const {
         register,
         handleSubmit,
@@ -57,6 +62,7 @@ function PersonalInfoForm({ handleStep }) {
     });
 
     const onSubmit = (data) => {
+        handleFormData(data);
         console.log(data);
     };
     return (
@@ -92,7 +98,7 @@ function PersonalInfoForm({ handleStep }) {
                     fullWidth
                     required
                     inputProps={{
-                        max: phoneNumberLength,
+                        max: maxNameLength,
                     }}
                     {...register("phoneNumber")}
                     error={!!errors.phoneNumber}
