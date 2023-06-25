@@ -52,13 +52,32 @@ const schema = yup.object().shape({
                     selectedDateTime
                         .startOf("day")
                         .isSame(currentDate.startOf("day")) &&
-                    selectedDateTime.isBefore(currentDate)
+                    selectedDateTime.isBefore(currentDate) &&
+                    currentDate.isBefore(
+                        selectedDateTime.set("hour", closeHour.hour())
+                    )
                 ) {
                     return this.createError({
                         message: `Please select a time after ${currentDate.format(
                             "hh:mm A"
                         )}`,
                         path: "bookTime",
+                    });
+                }
+                if (
+                    selectedDateTime
+                        .startOf("day")
+                        .isSame(currentDate.startOf("day")) &&
+                    selectedDateTime.isBefore(currentDate) &&
+                    currentDate.isAfter(
+                        selectedDateTime.set("hour", closeHour.hour())
+                    )
+                ) {
+                    return this.createError({
+                        message: `We are closed for today, please select a date after ${currentDate.format(
+                            "MM/DD/YYYY"
+                        )}`,
+                        path: "bookDate",
                     });
                 }
                 if (selectedDateTime.isBefore(currentDate)) {
@@ -132,6 +151,7 @@ function BookingForm({ handleStep }) {
                                         error: !!errors.bookDate,
                                         helperText: errors.bookDate?.message,
                                         fullWidth: true,
+                                        required: true,
                                     },
                                 }}
                             />
@@ -155,6 +175,7 @@ function BookingForm({ handleStep }) {
                                         error: !!errors.bookTime,
                                         helperText: errors.bookTime?.message,
                                         fullWidth: true,
+                                        required: true,
                                     },
                                 }}
                             />
@@ -165,6 +186,7 @@ function BookingForm({ handleStep }) {
                     label="Number of Diners"
                     type="number"
                     fullWidth
+                    required
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
@@ -209,6 +231,7 @@ function BookingForm({ handleStep }) {
                             label="Seating Option"
                             select
                             fullWidth
+                            required
                             error={!!errors.seating}
                             helperText={errors.seating?.message}
                         >
