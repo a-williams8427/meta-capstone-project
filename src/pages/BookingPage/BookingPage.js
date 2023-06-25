@@ -5,28 +5,43 @@ import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { BookingContext } from "../../Contexts/BookingContext";
 import PersonalInfoForm from "./PersonalInfoForm";
+import { openHour } from "./BookingFormValidation";
 
 function BookingPage() {
     const [currentStep, setCurrentStep] = useState(0);
 
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({
+        bookDate: dayjs(),
+        bookTime: openHour,
+        diners: 0,
+        occasion: "",
+        seating: "",
+    });
 
     const handleFormData = (data) => {
         setFormData((prevData) => ({ ...prevData, ...data }));
     };
 
-    const handleStep = () => {
-        setCurrentStep((prevStep) => prevStep + 1);
+    const handleStep = (command) => {
+        switch (command) {
+            case "step":
+                setCurrentStep((prevStep) => prevStep + 1);
+                break;
+            case "back":
+                setCurrentStep((prevStep) => prevStep - 1);
+                break;
+            default:
+                return;
+        }
     };
 
-    const subTitles = [
-        "Find a table for any occasion",
-        `${formData.seating} table for ${formData.diners} diners on ${dayjs(
-            formData.bookDate
-        ).format("MM/DD/YYYY")} at ${dayjs(formData.bookTime).format(
-            "hh:mm A"
-        )}`,
-    ];
+    const bookingDescription = `${formData.seating} table for ${
+        formData.diners
+    } ${formData.diners > 1 ? "diners" : "diner"} on ${dayjs(
+        formData.bookDate
+    ).format("MM/DD/YYYY")} at ${dayjs(formData.bookTime).format("hh:mm A")}`;
+
+    const subTitles = ["Find a table for any occasion", bookingDescription];
 
     console.log(formData);
     return (

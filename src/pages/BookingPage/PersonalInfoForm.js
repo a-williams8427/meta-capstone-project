@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { BookingContext } from "../../Contexts/BookingContext";
 import { Stack, TextField } from "@mui/material";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import FormWrapper from "./FormWrapper";
@@ -129,9 +129,26 @@ function PersonalInfoForm() {
                     error={!!errors.request}
                     helperText={errors.request?.message}
                 />
-                <YellowButton type="submit" variant="contained" fullWidth>
-                    Book
-                </YellowButton>
+                <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    width={"100%"}
+                    spacing={{ xs: 1, sm: 2 }}
+                >
+                    <YellowButton
+                        variant="contained"
+                        fullWidth
+                        onClick={() => {
+                            handleStep("back");
+                        }}
+                    >
+                        Back
+                    </YellowButton>
+                    <YellowButton type="submit" variant="contained" fullWidth>
+                        Book
+                    </YellowButton>
+                </Stack>
             </FormWrapper>
         </>
     );
