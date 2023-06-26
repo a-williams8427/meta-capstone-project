@@ -1,12 +1,10 @@
 import dayjs from "dayjs";
 import * as yup from "yup";
 
-export const openHour = dayjs().set("hour", 17).startOf("hour");
-export const closeHour = dayjs().set("hour", 22).startOf("hour");
+import { openHour, closeHour  } from "./BookingPage";
 
-export const minDiners = 1;
-export const maxDiners = 16;
 
+//TODO: Clean up validation since available times are determined by the selected date.
 export const schema = yup.object().shape({
     bookDate: yup.mixed().required("Please select a date"),
     bookTime: yup

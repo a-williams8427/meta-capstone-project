@@ -14,14 +14,17 @@ import {
     maxDiners,
     minDiners,
 } from "./BookingFormValidation";
+import dayjs from "dayjs";
+
 
 function BookingForm() {
-    const { handleFormData, handleStep, formData } = useContext(BookingContext);
-
+    const { handleFormData, handleStep, formData, availibleTimes } = useContext(BookingContext);
+    
     const {
         register,
         handleSubmit,
         control,
+        watch,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -33,15 +36,42 @@ function BookingForm() {
         },
         resolver: yupResolver(schema),
     });
+    
+    const selectedDate = watch("bookDate")
+    
+    const filterTimes = (time) => {
+        const currentDate = dayjs()
+        const isSameDay = selectedDate.startOf("day").isSame(currentDate.startOf("day"))
+        const isAfter = selectedDate.isAfter(currentDate)
+        const isBefore = selectedDate.isBefore(currentDate)
 
+        let minTime;
+        
+        if (isSameDay) {
+            minTime = selectedDate.hour()
+        }else if (isAfter && !isSameDay) {
+            minTime = openHour;
+        }else if (isBefore) {
+            return false
+        }
+        
+        return  minTime < time && time <= closeHour.hour()
+
+    }
+
+    const formatNumToHour = (time, format) => {
+        dayjs().set("hour", time).startOf("hour").format(format)
+    }
+    
+    const occasions = ["Birthday", "Anniversary", "Holiday", "Gathering"];
+    
     const onSubmit = (data) => {
         console.log(data);
         handleFormData(data);
         handleStep("step");
     };
-
-    const occasions = ["Birthday", "Anniversary", "Holiday", "Gathering"];
-
+    
+    
     return (
         <>
             <FormWrapper onSubmit={handleSubmit(onSubmit)}>
@@ -50,7 +80,7 @@ function BookingForm() {
                     justifyContent="center"
                     alignItems="center"
                     spacing={{ xs: 1, sm: 2 }}
-                >
+                    >
                     <Controller
                         control={control}
                         name="bookDate"
@@ -76,6 +106,28 @@ function BookingForm() {
                         control={control}
                         name="bookTime"
                         render={({ field }) => (
+                            <TextField
+                            {...field}
+                            label="Time Slots"
+                            select
+                            fullWidth
+                            error={!!errors.bookTime}
+                            helperText={errors.bookTime?.message}
+                        >
+                            {/* TODO: Add filtering function that grabs the bookTime field's value  
+                                Should work now*/}
+                            {availibleTimes.filter(filterTimes).map((time) => (
+                                <MenuItem key={time} value={time}>
+                                    {formatNumToHour(time, "hh:mm A")}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        )}
+                    />
+                    {/* <Controller
+                        control={control}
+                        name="bookTime"
+                        render={({ field }) => (
                             <TimePicker
                                 {...field}
                                 label="Time"
@@ -94,7 +146,7 @@ function BookingForm() {
                                 }}
                             />
                         )}
-                    />
+                    /> */}
                 </Stack>
                 <TextField
                     label="Number of Diners"

@@ -7,6 +7,15 @@ import { BookingContext } from "../../Contexts/BookingContext";
 import PersonalInfoForm from "./PersonalInfoForm";
 import { openHour } from "./BookingFormValidation";
 
+export const openHour = dayjs().set("hour", 17).startOf("hour");
+export const closeHour = dayjs().set("hour", 22).startOf("hour");
+
+export const minDiners = 1;
+export const maxDiners = 16;
+
+//For scalability this should be generated based on a range but I'll leave it as is for now
+const availibleTimes = [17, 18, 19 ,20, 21, 22]
+
 function BookingPage() {
     const defaultFormFields = {
         bookTime: openHour,
@@ -43,6 +52,7 @@ function BookingPage() {
 
     //TODO: Misread specifications, need to redo the validation to be slots that update based on the selected date
 
+
     const bookingDescription = `${formData.seating} table for ${
         formData.diners
     } ${formData.diners > 1 ? "diners" : "diner"} on ${dayjs(
@@ -55,7 +65,7 @@ function BookingPage() {
     return (
         <>
             <BookingContext.Provider
-                value={{ handleFormData, handleStep, formData }}
+                value={{ handleFormData, handleStep, formData, availibleTimes }}
             >
                 <Box
                     sx={{
