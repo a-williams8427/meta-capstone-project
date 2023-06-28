@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { BookingContext } from "../../Contexts/BookingContext";
 import { Stack, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +9,7 @@ import YellowButton from "../../components/YellowButton";
 const maxNameLength = 50;
 const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const maxPhoneLength = 15;
 const maxEmailLength = 320;
 const maxTextFieldLength = 300;
 
@@ -31,7 +31,11 @@ const schema = yup.object({
     phoneNumber: yup
         .string()
         .required("Please provide a phone number.")
-        .matches(phoneRegExp, "Please provide a valid phone number."),
+        .matches(phoneRegExp, "Please provide a valid phone number.")
+        .max(
+            maxPhoneLength,
+            "Please provide a number that is less than 15 digits long"
+        ),
     email: yup
         .string()
         .email("Please provide a valid email.")
@@ -43,9 +47,12 @@ const schema = yup.object({
     request: yup.string(),
 });
 
-function PersonalInfoForm() {
-    const { handleFormData, handleStep, formData } = useContext(BookingContext);
-
+function PersonalInfoForm({
+    handleFormData,
+    handleStep,
+    formData,
+    submitForm,
+}) {
     const {
         register,
         handleSubmit,
@@ -64,6 +71,8 @@ function PersonalInfoForm() {
     const onSubmit = (data) => {
         handleFormData(data);
         console.log(data);
+        console.log(formData);
+        submitForm(formData) && handleStep("submit");
     };
     return (
         <>
@@ -82,7 +91,7 @@ function PersonalInfoForm() {
                 />
                 <TextField
                     label="Last Name"
-                    type="tel"
+                    type="text"
                     fullWidth
                     required
                     inputProps={{
@@ -94,11 +103,11 @@ function PersonalInfoForm() {
                 />
                 <TextField
                     label="Phone Number"
-                    type="text"
+                    type="tel"
                     fullWidth
                     required
                     inputProps={{
-                        max: maxNameLength,
+                        max: maxPhoneLength,
                     }}
                     {...register("phoneNumber")}
                     error={!!errors.phoneNumber}

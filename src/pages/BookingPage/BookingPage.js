@@ -3,9 +3,9 @@ import BookingForm from "./BookingForm";
 import Chicago from "../../components/Chicago";
 import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { BookingContext } from "../../Contexts/BookingContext";
 import PersonalInfoForm from "./PersonalInfoForm";
-import { fetchAPI } from "../../lib/api";
+import { fetchAPI, submitAPI } from "../../lib/api";
+import ConfirmedBooking from "./ConfirmedBooking";
 
 function BookingPage() {
     //const timeSlots = [17, 18, 19, 20, 21, 22];
@@ -13,7 +13,6 @@ function BookingPage() {
 
     const initializeTimes = () => {
         const timeSlots = fetchAPI(currentDate.toDate());
-        console.log(dayjs(timeSlots[0], "HH:mm"));
 
         return timeSlots;
     };
@@ -60,70 +59,86 @@ function BookingPage() {
     const handleStep = (command) => {
         switch (command) {
             case "step":
-                setCurrentStep((prevStep) => prevStep + 1);
+                setCurrentStep((prevStep) => (prevStep = 1));
                 break;
             case "back":
-                setCurrentStep((prevStep) => prevStep - 1);
+                setCurrentStep((prevStep) => (prevStep = 0));
+                break;
+            case "submit":
+                setCurrentStep((prevStep) => (prevStep = 2));
                 break;
             default:
                 return;
         }
     };
 
-    //TODO: Misread specifications, need to redo the validation to be slots that update based on the selected date
+    const submitForm = (data) => {
+        return submitAPI(data);
+    };
 
     const bookingDescription = `${formData.seating} table for ${
         formData.diners
     } ${formData.diners > 1 ? "diners" : "diner"} on ${dayjs(
         formData.bookDate
-    ).format("MM/DD/YYYY")} at ${dayjs(formData.bookTime).format("hh:mm A")}`;
+    ).format("MM/DD/YYYY")} at ${dayjs(formData.bookTime, "HH:mm").format(
+        "h:mm A"
+    )}`;
 
-    const subTitles = ["Find a table for any occasion", bookingDescription];
+    const subTitles = [
+        "Find a table for any occasion",
+        bookingDescription,
+        "Reservation Confirmed!",
+    ];
 
-    //console.log(availableTimes);
     return (
         <>
-            <BookingContext.Provider
-                value={{
-                    handleFormData,
-                    handleStep,
-                    formData,
-                    availableTimes,
-                    dispatch,
+            <Box
+                sx={{
+                    width: "100%",
+                    backgroundColor: "primary.main",
                 }}
             >
-                <Box
-                    sx={{
-                        width: "100%",
-                        backgroundColor: "primary.main",
-                    }}
-                >
-                    <div style={{ marginLeft: "25px", marginRight: "25px" }}>
-                        <Chicago />
-                        <Typography
-                            variant="h6"
-                            color="primary.contrastText"
-                            component="h3"
-                            paddingTop="5rem"
-                            paddingBottom="1rem"
-                        >
-                            {subTitles[currentStep]}
-                        </Typography>
-                    </div>
-                </Box>
                 <div style={{ marginLeft: "25px", marginRight: "25px" }}>
-                    {currentStep === 0 && (
-                        <>
-                            <BookingForm />
-                        </>
-                    )}
-                    {currentStep === 1 && (
-                        <>
-                            <PersonalInfoForm />
-                        </>
-                    )}
+                    <Chicago />
+                    <Typography
+                        variant="h6"
+                        color="primary.contrastText"
+                        component="h3"
+                        paddingTop="5rem"
+                        paddingBottom="1rem"
+                    >
+                        {subTitles[currentStep]}
+                    </Typography>
                 </div>
-            </BookingContext.Provider>
+            </Box>
+            <div style={{ marginLeft: "25px", marginRight: "25px" }}>
+                {currentStep === 0 && (
+                    <>
+                        <BookingForm
+                            handleFormData={handleFormData}
+                            handleStep={handleStep}
+                            formData={formData}
+                            availableTimes={availableTimes}
+                            dispatch={dispatch}
+                        />
+                    </>
+                )}
+                {currentStep === 1 && (
+                    <>
+                        <PersonalInfoForm
+                            handleFormData={handleFormData}
+                            handleStep={handleStep}
+                            formData={formData}
+                            submitForm={submitForm}
+                        />
+                    </>
+                )}
+                {currentStep === 2 && (
+                    <>
+                        <ConfirmedBooking />
+                    </>
+                )}
+            </div>
         </>
     );
 }
