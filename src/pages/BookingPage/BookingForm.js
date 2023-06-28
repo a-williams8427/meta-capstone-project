@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { BookingContext } from "../../Contexts/BookingContext";
 import { InputAdornment, MenuItem, Stack, TextField } from "@mui/material";
 import GroupIcon from "@mui/icons-material/Group";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -41,6 +40,8 @@ const schema = yup.object().shape({
                         path: "bookDate",
                     });
                 }
+
+                return !isBefore;
             }
         ),
     bookTime: yup.mixed().required("Please select a time"),
@@ -53,10 +54,13 @@ const schema = yup.object().shape({
     seating: yup.string().required("Please select a seating option"),
 });
 
-function BookingForm() {
-    const { handleFormData, handleStep, formData, availableTimes, dispatch } =
-        useContext(BookingContext);
-
+function BookingForm({
+    handleFormData,
+    handleStep,
+    formData,
+    availableTimes,
+    dispatch,
+}) {
     const {
         register,
         handleSubmit,
@@ -81,9 +85,9 @@ function BookingForm() {
         dispatch({ type: "update", payload: date });
     };
 
-    const formatNumToHour = (time, format) => {
-        return dayjs(time, "HH:mm").format(format);
-    };
+    // const formatNumToHour = (time, format) => {
+    //     return dayjs(time, "HH:mm").format(format);
+    // };
 
     const occasions = ["Birthday", "Anniversary", "Holiday", "Gathering"];
 
@@ -144,7 +148,7 @@ function BookingForm() {
                                 Should work now*/}
                                 {availableTimes.map((time) => (
                                     <MenuItem key={time} value={time}>
-                                        {formatNumToHour(time, "h:mm A")}
+                                        {time}
                                     </MenuItem>
                                 ))}
                             </TextField>
