@@ -1,24 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import BookingForm from "./BookingForm";
 import Chicago from "../../components/Chicago";
 import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { BookingContext } from "../../Contexts/BookingContext";
 import PersonalInfoForm from "./PersonalInfoForm";
-import { openHour } from "./BookingFormValidation";
-
-export const openHour = dayjs().set("hour", 17).startOf("hour");
-export const closeHour = dayjs().set("hour", 22).startOf("hour");
-
-export const minDiners = 1;
-export const maxDiners = 16;
-
-//For scalability this should be generated based on a range but I'll leave it as is for now
-const availibleTimes = [17, 18, 19 ,20, 21, 22]
+import { fetchAPI } from "../../lib/api";
 
 function BookingPage() {
+    //const timeSlots = [17, 18, 19, 20, 21, 22];
+    const currentDate = dayjs();
+
+    const initializeTimes = () => {
+        const timeSlots = fetchAPI(currentDate.toDate());
+        console.log(dayjs(timeSlots[0], "HH:mm"));
+
+        return timeSlots;
+    };
+
+    const updateTimes = (state, action) => {
+        let times;
+        switch (action.type) {
+            case "update":
+                const selectedDate = action.payload;
+                const timeSlots = fetchAPI(selectedDate.toDate());
+
+                times = timeSlots;
+                break;
+            default:
+                throw new Error();
+        }
+        return times;
+    };
+    const [availableTimes, dispatch] = useReducer(
+        updateTimes,
+        initializeTimes()
+    );
+
     const defaultFormFields = {
-        bookTime: openHour,
+        bookTime: "",
         bookDate: dayjs(),
         diners: 0,
         occasion: "",
@@ -52,7 +72,6 @@ function BookingPage() {
 
     //TODO: Misread specifications, need to redo the validation to be slots that update based on the selected date
 
-
     const bookingDescription = `${formData.seating} table for ${
         formData.diners
     } ${formData.diners > 1 ? "diners" : "diner"} on ${dayjs(
@@ -61,11 +80,17 @@ function BookingPage() {
 
     const subTitles = ["Find a table for any occasion", bookingDescription];
 
-    console.log(formData);
+    //console.log(availableTimes);
     return (
         <>
             <BookingContext.Provider
-                value={{ handleFormData, handleStep, formData, availibleTimes }}
+                value={{
+                    handleFormData,
+                    handleStep,
+                    formData,
+                    availableTimes,
+                    dispatch,
+                }}
             >
                 <Box
                     sx={{
