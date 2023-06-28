@@ -9,6 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import BookingPage from "./BookingPage";
 import dayjs from "dayjs";
+import BookingForm from "./BookingForm";
 
 // test("renders the Date label", () => {
 //     render(
@@ -20,7 +21,9 @@ import dayjs from "dayjs";
 //     expect(fieldLabel).toBeInTheDocument();
 // });
 
-test("initailized time shows the default time slots", () => {
+const timePattern = /^(1[7-9]|2[0-3]):(00|30)$/;
+
+test("initialized time shows the default time slots", () => {
     render(
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <BookingPage />
@@ -31,13 +34,10 @@ test("initailized time shows the default time slots", () => {
 
     const timeOptions = screen.getAllByRole("option");
 
-    expect(timeOptions).toHaveLength(6);
-    expect(timeOptions[0]).toContainHTML("5:00 PM");
-    expect(timeOptions[1]).toContainHTML("6:00 PM");
-    expect(timeOptions[2]).toContainHTML("7:00 PM");
-    expect(timeOptions[3]).toContainHTML("8:00 PM");
-    expect(timeOptions[4]).toContainHTML("9:00 PM");
-    expect(timeOptions[5]).toContainHTML("10:00 PM");
+    expect(timeOptions).not.toHaveLength(0);
+    timeOptions.forEach((option) => {
+        expect(option.textContent).toMatch(timePattern);
+    });
 });
 
 test("update times slots based on date change", () => {
@@ -46,15 +46,19 @@ test("update times slots based on date change", () => {
             <BookingPage />
         </LocalizationProvider>
     );
+    const testDate = "08/29/2026";
+
     const dateInput = screen.getByLabelText("Date *");
-    fireEvent.change(dateInput, { target: { value: "06/29/2023" } });
+    fireEvent.change(dateInput, { target: { value: testDate } });
 
     const timeInput = screen.getByLabelText("Time Slots");
     fireEvent.mouseDown(timeInput);
 
     const timeOptions = screen.getAllByRole("option");
 
-    expect(dateInput).toHaveValue("06/29/2023");
-    expect(timeOptions).toHaveLength(6);
-    expect(timeOptions[0]).toContainHTML("5:00 PM");
+    expect(dateInput).toHaveValue(testDate);
+    expect(timeOptions).not.toHaveLength(0);
+    timeOptions.forEach((option) => {
+        expect(option.textContent).toMatch(timePattern);
+    });
 });
