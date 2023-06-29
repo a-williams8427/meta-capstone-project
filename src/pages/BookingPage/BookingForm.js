@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { InputAdornment, MenuItem, Stack, TextField } from "@mui/material";
 import GroupIcon from "@mui/icons-material/Group";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -10,10 +10,12 @@ import dayjs from "dayjs";
 import * as yup from "yup";
 
 // const openHour = dayjs().set("hour", 17).startOf("hour");
-// const closeHour = dayjs().set("hour", 22).startOf("hour");
+const closeHour = dayjs().set("hour", 22).set("minute", 30).startOf("hour");
 
 const maxDiners = 16;
 const minDiners = 1;
+
+const currentDate = dayjs();
 
 const schema = yup.object().shape({
     bookDate: yup
@@ -21,11 +23,9 @@ const schema = yup.object().shape({
         .required("Please select a date")
         .test(
             "correctDate",
-            "Please select a date and time in the future and within our open hours",
+            "Please select a date in the future",
             function (value) {
-                const currentDate = dayjs();
                 const selectedDate = value;
-
                 const isSameDay = selectedDate
                     .startOf("day")
                     .isSame(currentDate.startOf("day"));
@@ -44,7 +44,47 @@ const schema = yup.object().shape({
                 return !isBefore;
             }
         ),
-    bookTime: yup.mixed().required("Please select a time"),
+    bookTime: yup
+        .mixed()
+        .required("Please select a time")
+        .test(
+            "correctTime",
+            "Please select a time in the future and within our open hours",
+            function (value) {
+                const { bookDate } = this.parent;
+                const selectedDate = dayjs(bookDate);
+                const selectedTime = dayjs(value, "HH:mm");
+
+                const selectedDateTime = selectedDate
+                    .set("hour", selectedTime.hour())
+                    .set("minute", selectedTime.minute());
+
+                const isSameDay = selectedDateTime
+                    .startOf("day")
+                    .isSame(currentDate.startOf("day"));
+                const isBefore = selectedDateTime.isBefore(currentDate);
+                const isStillOpen =
+                    isSameDay && currentDate.isBefore(closeHour);
+
+                if (isBefore && isSameDay) {
+                    return this.createError({
+                        message: `Please select a time after ${currentDate.format(
+                            "HH:mm"
+                        )}`,
+                        path: "bookTime",
+                    });
+                }
+
+                if (!isStillOpen && isSameDay) {
+                    return this.createError({
+                        message: `We are closed for today, please select another day.`,
+                        path: "bookDate",
+                    });
+                }
+
+                return true;
+            }
+        ),
     diners: yup
         .number()
         .min(minDiners, `Please chose at least ${minDiners} person as a guest`)
@@ -65,7 +105,7 @@ function BookingForm({
         register,
         handleSubmit,
         control,
-        watch,
+        //watch,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -144,8 +184,6 @@ function BookingForm({
                                 error={!!errors.bookTime}
                                 helperText={errors.bookTime?.message}
                             >
-                                {/* TODO: Add filtering function that grabs the bookTime field's value
-                                Should work now*/}
                                 {availableTimes.map((time) => (
                                     <MenuItem key={time} value={time}>
                                         {time}
