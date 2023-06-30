@@ -7,11 +7,9 @@ import {
     CardContent,
     CardActions,
     Rating,
-    Divider,
 } from "@mui/material";
 
 function Testimonials() {
-    //TODO: Either mock testimonials or fetch fake users from an API
     const testimonials = [
         {
             rating: 5,
