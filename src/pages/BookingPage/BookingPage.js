@@ -80,9 +80,7 @@ function BookingPage() {
         formData.diners
     } ${formData.diners > 1 ? "diners" : "diner"} on ${dayjs(
         formData.bookDate
-    ).format("MM/DD/YYYY")} at ${dayjs(formData.bookTime, "HH:mm").format(
-        "h:mm A"
-    )}`;
+    ).format("MM/DD/YYYY")} at ${formData.bookTime}`;
 
     const subTitles = [
         "Find a table for any occasion",
