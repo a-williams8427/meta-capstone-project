@@ -1,9 +1,10 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
-
+import "./Hero.css";
 import picture from "../../assets/pictures/restauranfood.jpg";
 import YellowButton from "../../components/YellowButton";
 import Chicago from "../../components/Chicago";
+import { Link } from "react-router-dom";
 
 function Hero() {
     return (
@@ -34,24 +35,19 @@ function Hero() {
                             <YellowButton
                                 variant="contained"
                                 sx={{ marginTop: "1rem" }}
+                                component={Link}
+                                to={"/booking"}
+                                name="Reserve a table"
+                                aria-label="On Click"
                             >
                                 Reserve a table
                             </YellowButton>
                         </Grid>
                         <Grid item xs={5} md={6} lg={9}>
                             <img
+                                className="main-image"
                                 src={picture}
                                 alt="Food from Little Lemon"
-                                style={{
-                                    display: "block",
-                                    marginLeft: "auto",
-                                    marginRight: "auto",
-                                    width: "100%",
-                                    maxWidth: "560px",
-                                    height: "56.25%",
-                                    objectFit: "cover",
-                                    borderRadius: "16px",
-                                }}
                             />
                         </Grid>
                     </Grid>

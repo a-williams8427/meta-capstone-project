@@ -78,6 +78,7 @@ function PersonalInfoForm({
         <>
             <FormWrapper onSubmit={handleSubmit(onSubmit)}>
                 <TextField
+                    id="firstName"
                     label="First Name"
                     type="text"
                     fullWidth
@@ -90,6 +91,7 @@ function PersonalInfoForm({
                     helperText={errors.firstName?.message}
                 />
                 <TextField
+                    id="lastName"
                     label="Last Name"
                     type="text"
                     fullWidth
@@ -102,6 +104,7 @@ function PersonalInfoForm({
                     helperText={errors.lastName?.message}
                 />
                 <TextField
+                    id="phoneNumber"
                     label="Phone Number"
                     type="tel"
                     fullWidth
@@ -114,6 +117,7 @@ function PersonalInfoForm({
                     helperText={errors.phoneNumber?.message}
                 />
                 <TextField
+                    id="email"
                     label="Email"
                     type="email"
                     fullWidth
@@ -126,6 +130,7 @@ function PersonalInfoForm({
                     helperText={errors.email?.message}
                 />
                 <TextField
+                    id="request"
                     label="Special Requests"
                     type="text"
                     fullWidth
@@ -146,6 +151,8 @@ function PersonalInfoForm({
                     spacing={{ xs: 1, sm: 2 }}
                 >
                     <YellowButton
+                        id="back"
+                        name="back"
                         variant="contained"
                         fullWidth
                         onClick={() => {
@@ -154,7 +161,13 @@ function PersonalInfoForm({
                     >
                         Back
                     </YellowButton>
-                    <YellowButton type="submit" variant="contained" fullWidth>
+                    <YellowButton
+                        id="book"
+                        name="book"
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                    >
                         Book
                     </YellowButton>
                 </Stack>

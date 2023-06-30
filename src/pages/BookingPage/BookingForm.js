@@ -77,8 +77,16 @@ const schema = yup.object().shape({
 
                 if (!isStillOpen && isSameDay) {
                     return this.createError({
-                        message: `We are closed for today, please select another day.`,
+                        message:
+                            "We are closed for today, please select another day.",
                         path: "bookDate",
+                    });
+                }
+
+                if (value === "") {
+                    return this.createError({
+                        message: "Please select a time",
+                        path: "bookTime",
                     });
                 }
 
@@ -162,6 +170,7 @@ function BookingForm({
                                 value={field.value || null}
                                 slotProps={{
                                     textField: {
+                                        id: "bookDate",
                                         error: !!errors.bookDate,
                                         helperText: errors.bookDate?.message,
                                         fullWidth: true,
@@ -192,31 +201,9 @@ function BookingForm({
                             </TextField>
                         )}
                     />
-                    {/* <Controller
-                        control={control}
-                        name="bookTime"
-                        render={({ field }) => (
-                            <TimePicker
-                                {...field}
-                                label="Time"
-                                minTime={openHour}
-                                maxTime={closeHour}
-                                closeOnSelect={false}
-                                onChange={(e) => field.onChange(e)}
-                                value={field.value || null}
-                                slotProps={{
-                                    textField: {
-                                        error: !!errors.bookTime,
-                                        helperText: errors.bookTime?.message,
-                                        fullWidth: true,
-                                        required: true,
-                                    },
-                                }}
-                            />
-                        )}
-                    /> */}
                 </Stack>
                 <TextField
+                    id="diners"
                     label="Number of Diners"
                     type="number"
                     fullWidth
@@ -242,6 +229,7 @@ function BookingForm({
                     render={({ field }) => (
                         <TextField
                             {...field}
+                            id="occasion"
                             label="Occasion"
                             select
                             fullWidth
@@ -262,6 +250,7 @@ function BookingForm({
                     render={({ field }) => (
                         <TextField
                             {...field}
+                            id="seating"
                             label="Seating Option"
                             select
                             fullWidth
@@ -274,7 +263,13 @@ function BookingForm({
                         </TextField>
                     )}
                 />
-                <YellowButton type="submit" variant="contained" fullWidth>
+                <YellowButton
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    id="continue"
+                    name="continue"
+                >
                     Continue
                 </YellowButton>
             </FormWrapper>
