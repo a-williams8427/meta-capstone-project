@@ -4,7 +4,7 @@ import Testimonials from "./Testimonials";
 
 function Main() {
     return (
-        <main style={{ marginLeft: "25px", marginRight: "25px" }}>
+        <main>
             <Specials />
             <Testimonials />
         </main>
