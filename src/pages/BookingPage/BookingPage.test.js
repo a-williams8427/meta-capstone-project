@@ -3,16 +3,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import BookingPage from "./BookingPage";
 
-// test("renders the Date label", () => {
-//     render(
-//         <LocalizationProvider dateAdapter={AdapterDayjs}>
-//             <BookingPage />
-//         </LocalizationProvider>
-//     );
-//     const fieldLabel = screen.getByLabelText("Date *");
-//     expect(fieldLabel).toBeInTheDocument();
-// });
-
 const timePattern = /^(1[7-9]|2[0-3]):(00|30)$/;
 const dateErrorMessageText = "Please select a date that hasn't passed.";
 const dinerErrorMessageText = "Please chose at least 1 person as a guest";
