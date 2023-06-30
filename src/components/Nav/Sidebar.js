@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
+import { navLinks } from "./Nav";
 
-function Sidebar({ navItems, handleSidebarToggle }) {
+function Sidebar({ handleSidebarToggle }) {
     return (
         <>
             <Box
@@ -17,13 +18,17 @@ function Sidebar({ navItems, handleSidebarToggle }) {
                 sx={{ textAlign: "center", overflow: "auto" }}
             >
                 <List>
-                    {navItems.map((item) => (
+                    {navLinks.map((item) => (
                         <ListItem
                             key={`${item.text}Sidebar`}
                             disablePadding
                             divider
                         >
-                            <ListItemButton component={Link} to={item.link}>
+                            <ListItemButton
+                                aria-label="On Click"
+                                component={Link}
+                                to={item.link}
+                            >
                                 <ListItemText>
                                     <Typography
                                         fontSize="16px"

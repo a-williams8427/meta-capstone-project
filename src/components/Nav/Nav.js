@@ -14,17 +14,16 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import Sidebar from "./Sidebar";
 
+export const navLinks = [
+    { text: "Home", link: "/" },
+    { text: "Book", link: "/booking" },
+];
 function Nav({ window }) {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const sidebarWidth = 240;
     const container =
         window !== undefined ? () => window().document.body : undefined;
-
-    const navLinks = [
-        { text: "Home", link: "/" },
-        { text: "Book", link: "/booking" },
-    ];
 
     const handleSidebarToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -69,7 +68,7 @@ function Nav({ window }) {
                     >
                         <Box sx={{ display: { sm: "none" } }}>
                             <IconButton
-                                aria-label="open sidebar"
+                                aria-label="Open Sidebar"
                                 edge="start"
                                 onClick={handleSidebarToggle}
                                 sx={{ ml: 0 }}
@@ -89,6 +88,7 @@ function Nav({ window }) {
                         >
                             {navLinks.map((item) => (
                                 <Button
+                                    aria-label="On Click"
                                     sx={{
                                         fontSize: "18px",
                                         fontWeight: "bold",
@@ -112,7 +112,7 @@ function Nav({ window }) {
                     </div>
                 </Toolbar>
             </AppBar>
-            <Box component="nav">
+            <Box component="nav" sx={{ display: { xs: "block", sm: "none" } }}>
                 <Drawer
                     container={container}
                     variant="temporary"
@@ -128,10 +128,7 @@ function Nav({ window }) {
                     }}
                 >
                     <Toolbar />
-                    <Sidebar
-                        navItems={navLinks}
-                        handleSidebarToggle={handleSidebarToggle}
-                    />
+                    <Sidebar handleSidebarToggle={handleSidebarToggle} />
                 </Drawer>
             </Box>
         </>
