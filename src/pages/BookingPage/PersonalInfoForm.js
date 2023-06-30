@@ -69,9 +69,8 @@ function PersonalInfoForm({
     });
 
     const onSubmit = (data) => {
-        handleFormData(data);
         console.log(data);
-        console.log(formData);
+        handleFormData(data);
         submitForm(formData) && handleStep("submit");
     };
     return (

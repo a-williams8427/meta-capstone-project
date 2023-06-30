@@ -133,7 +133,7 @@ function BookingPage() {
                 )}
                 {currentStep === 2 && (
                     <>
-                        <ConfirmedBooking />
+                        <ConfirmedBooking formData={formData} />
                     </>
                 )}
             </div>
