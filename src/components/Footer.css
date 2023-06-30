@@ -1,0 +1,18 @@
+footer {
+    box-shadow: inset 0px 7px 15px -10px rgba(0, 0, 0);
+    text-align: center;
+}
+
+footer img {
+    display: block;
+    min-width: 50px;
+    max-width: 100px;
+    height: 100%;
+}
+
+footer > div {
+    margin-left: 25px;
+    margin-right: 25px;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+}
