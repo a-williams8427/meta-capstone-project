@@ -1,50 +1,5 @@
 # Meta Front-end developer capstone project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+In this project I was tasked with implementing the booking system for a client persona called Little Lemon. I was given a design system and specifications to follow but the implementation was almost entirely up to me. The only thing I didn't have control over was the API for changing the time slots for a given day.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm install`
-
-This will download all the dependencies that the projects needs so please make sure to run this before testing.
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+I also included 4 unit tests as required by the specifications for the form. For which I used `React Hook Form` combined with `Yup` to make the client side validation. One challenge I faced while doing this project was the use of `Material UI's` DatePicker and other inputs components in conjunction with React Hook Form. You can't use them by spreading the register props like you would normally. Thankfully React Hook Form has a way around that limitation by using the Controller component. This was a good experience for the limitations of styled components when dealing with other libraries.
